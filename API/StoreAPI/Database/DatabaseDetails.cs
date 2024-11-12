@@ -8,5 +8,16 @@ namespace StoreAPI.Database
         public DatabaseDetails(DbContextOptions<DatabaseDetails> options):base(options) { }
 
         public DbSet<UserInfo> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<CompanyDetails> CompanyDetails { get; set; }
+        public DbSet<CustomerDetails> CustomerDetails { get; set; }
+        public DbSet<ProductDetails> ProductDetails { get; set; }
+        public DbSet<DueDetails> DueDetails { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserInfo>()
+                .HasIndex(e => new {e.MobileNumber,e.UserName,e.CompanyId})
+                .IsUnique();
+        }
     }
 }
