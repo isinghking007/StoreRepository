@@ -13,7 +13,7 @@ namespace StoreAPI.Controllers
        {
             _companyRepository=companyRepository;
        }
-        [HttpGet("companyDetails/{companyID}")]
+        [HttpGet("companyDetails/{companyId}")]
         public async Task<IActionResult> GetCompanyDetails(int companyId)
         {
             var company = await _companyRepository.GetCompanyDetails(companyId);

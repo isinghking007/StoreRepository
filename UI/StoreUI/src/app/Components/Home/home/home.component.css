@@ -1,0 +1,17 @@
+.row{
+    width:100%;
+    height: 600px;
+    border: 1px solid red;
+    display: flex;
+    flex-wrap: wrap;
+}
+.col-8{
+    border: 1px solid black;
+    width: 60%;
+    height: 65%;
+}
+.col-4{
+    border: 1px solid yellow;
+    width: 39%;
+    height: 50%;
+}

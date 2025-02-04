@@ -1,0 +1,29 @@
+<div class="container">
+    @if(isLoading){<div class="spinner-overlay">
+        <div class="spinner"></div>
+      </div>}
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" >
+        <label for="productName">Product Name :</label>
+        <input type="text" id="productName" formControlName="productName" />
+        <label for="packetSize">Packet Size :</label>
+        <input type="text" id="packetSize" formControlName="packetSize" />
+        <label for="productMRP">Product MRP :</label>
+        <input type="number" id="productMRP" formControlName="productMRP" />
+        <label for="purchasePrice">Purchase Price:</label>
+        <input type="number" id="purchasePrice" formControlName="purchasePrice" />
+        <label for="sellingPrice">Selling Price:</label>
+        <input type="number" id="sellingPrice" formControlName="sellingPrice" />
+        <label for="totalQuantity">Total Quantity:</label>
+        <input type="number" id="totalQuantity" formControlName="totalQuantity" />
+        <label for="purchaseDate">Purchase Date:</label>
+        <input type="date" id="purchaseDate" formControlName="purchaseDate" />
+        <label for="file">Upload Bill:</label>
+       <input type="file" id="productBills" formControlName="productBills" (change)="onFileSelected($event)">
+
+      <button type="submit" [disabled]="productForm.invalid">Submit</button>
+    </form>
+    @if(errorMessage){<div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
+</div>

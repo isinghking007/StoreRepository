@@ -22,6 +22,40 @@ namespace StoreAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("StoreAPI.Models.BorrowerDetails", b =>
+                {
+                    b.Property<int>("BorrowerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BorrowerId"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("BorrowDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("BorrowerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BorrowerPhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BorrowerId");
+
+                    b.ToTable("BorrowerDetails");
+                });
+
             modelBuilder.Entity("StoreAPI.Models.CompanyDetails", b =>
                 {
                     b.Property<int>("CompanyID")
@@ -55,17 +89,33 @@ namespace StoreAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
+                    b.Property<int>("AmountPaid")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CustomerName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastName")
+                    b.Property<string>("FileLocation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Mobile")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RemainingAmount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalAmount")
+                        .HasColumnType("int");
 
                     b.HasKey("CustomerId");
 
@@ -110,6 +160,35 @@ namespace StoreAPI.Migrations
                     b.ToTable("DueDetails");
                 });
 
+            modelBuilder.Entity("StoreAPI.Models.FormData", b =>
+                {
+                    b.Property<int>("FormId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FormId"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileLocation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FormId");
+
+                    b.ToTable("FormData");
+                });
+
             modelBuilder.Entity("StoreAPI.Models.ProductDetails", b =>
                 {
                     b.Property<int>("ProductId")
@@ -118,29 +197,40 @@ namespace StoreAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
-                    b.Property<int>("AvailableVolume")
-                        .HasColumnType("int");
+                    b.Property<string>("BillLocation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BillName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PacketSize")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ProductMRP")
+                        .HasColumnType("int");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<double>("PurchasePrice")
                         .HasColumnType("float");
 
-                    b.Property<double>("SalePrice")
+                    b.Property<double>("SellingPrice")
                         .HasColumnType("float");
 
-                    b.Property<int>("TotalVolume")
+                    b.Property<int>("TotalQuantity")
                         .HasColumnType("int");
+
+                    b.Property<string>("UniqueKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProductId");
 

@@ -13,6 +13,8 @@ namespace StoreAPI.Database
         public DbSet<CustomerDetails> CustomerDetails { get; set; }
         public DbSet<ProductDetails> ProductDetails { get; set; }
         public DbSet<DueDetails> DueDetails { get; set; }
+        public DbSet<BorrowerDetails> BorrowerDetails { get; set; }
+        public DbSet<FormData> FormData { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserInfo>()

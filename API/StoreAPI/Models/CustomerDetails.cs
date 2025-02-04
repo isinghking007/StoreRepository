@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using StoreAPI.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace StoreAPI.Models
 {
@@ -6,10 +7,16 @@ namespace StoreAPI.Models
     {
         [Key]
         public int CustomerId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string CustomerName { get; set; }
+      
         public string Address { get; set; }
         public string Mobile { get; set; }
+        public DateTime PurchaseDate { get; set; }
+        public int TotalAmount { get; set; }
+        public int AmountPaid { get; set; }
+        public int RemainingAmount { get; set; }
+        public string FileLocation { get; set; }
+        public string FileName { get; set; }
 
 
     }
