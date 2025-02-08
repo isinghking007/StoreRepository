@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { FileHandle } from '../../../../Interfaces/FileHandle/FileHandle';
 import { CommonservicesService } from '../../../../Services/commonservices.service';
 
@@ -22,12 +22,38 @@ export class AddcustomerComponent {
       purchaseDate: ['', Validators.required],
       totalamount: ['', [Validators.required, Validators.min(1)]],
       amountpaid: ['', [Validators.required, Validators.min(0)]],
-      remainingamount: ['', [Validators.required, Validators.min(0)]],
+      remainingamount: [{ value: 0, disabled: true }],
       file: [null, Validators.required] // Changed to accept a file object
-    });
+    },{validators:this.amountValidator}
+  );
+    this.onChanges();
   }
 
   ngOnInit(): void {}
+
+  amountValidator(control:AbstractControl){
+    const totalamount=control.get('totalamount')?.value||0;
+    const paidamount=control.get('amountpaid')?.value||0;
+   return totalamount<paidamount? {paidGreaterThanTotal: true}:null;
+  }
+  hasPaidGreater():Boolean{
+    return this.customerForm.hasError('paidGreaterThanTotal');
+  }
+
+  onChanges(){
+    this.customerForm.valueChanges.subscribe(val=>{
+      const totalamount=this.customerForm.get('totalamount')?.value||0;
+      const amountpaid=this.customerForm.get('amountpaid')?.value||0;
+      const remainingamount=totalamount-amountpaid;
+      if(totalamount<amountpaid){
+        this.customerForm.patchValue({remainingamount:0},{emitEvent:false});
+        this.customerForm.get('remainingamount')?.setErrors({invalid:true});
+      }
+      else{
+        this.customerForm.patchValue({remainingamount},{emitEvent:false});
+      }
+    })
+  }
 
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];

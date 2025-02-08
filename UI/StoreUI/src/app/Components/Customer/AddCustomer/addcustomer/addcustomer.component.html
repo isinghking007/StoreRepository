@@ -11,8 +11,11 @@
         <input type="number" id="totalamount" formControlName="totalamount" />
         <label for="amountpaid">Amount Paid:</label>
         <input type="number" id="amountpaid" formControlName="amountpaid" />
+        @if(hasPaidGreater()){
+          <p class="error-message">Amount paid should be less than total amount</p>
+      }
         <label for="remainingamount">Remaining amount:</label>
-        <input type="number" id="remainingamount" formControlName="remainingamount" />
+        <input type="number" id="remainingamount" formControlName="remainingamount" [disabled]="true"/>
         <label for="purchaseDate">Purchase Date:</label>
         <input type="date" id="purchaseDate" formControlName="purchaseDate" />
         <label for="file">Upload Bill:</label>
