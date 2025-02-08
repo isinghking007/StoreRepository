@@ -19,10 +19,14 @@ namespace StoreAPI.Repositories
         private readonly IAmazonS3 _amazonS3Client;
         private readonly IConfiguration _config;
         private readonly ILogger<AmazonS3Repository> log;
+        private readonly string _awsAccessKey;
+        private readonly string _awsSecretKey;
 
         // Inject the IAmazonS3 client (this can be configured in DI container)
         public AmazonS3Repository(IConfiguration config, IAmazonS3 amazonS3Client,ILogger<AmazonS3Repository> logs)
         {
+            _awsAccessKey = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID");
+            _awsSecretKey = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
             _config = config;
             log = logs;
             _amazonS3Client = amazonS3Client;
@@ -33,7 +37,7 @@ namespace StoreAPI.Repositories
         public string GeneratePreSignedURL(string filename, int expirationMinutes = 15)
         {
 
-            var awsCredentials = new BasicAWSCredentials(_config["AWS:AccessKeyId"], _config["AWS:SecretAccessKey"]);
+            var awsCredentials = new BasicAWSCredentials(_awsAccessKey,_awsSecretKey);
             var s3Client = new AmazonS3Client(awsCredentials, RegionEndpoint.APSouth1);
             var request = new GetPreSignedUrlRequest
             {
@@ -49,7 +53,7 @@ namespace StoreAPI.Repositories
         {
             using var stream = file.OpenReadStream();
             string bucketName = _config["AWS:BucketName"];
-            string key = _config["AWS:AccessKeyId"];
+            string key = _awsAccessKey;
 
             var uploadRequest = new TransferUtilityUploadRequest
             {
@@ -70,8 +74,8 @@ namespace StoreAPI.Repositories
         public async Task<S3FileDetailsDTO> UploadFileAsyncNew(IFormFile file)
         {
             string bucketName = _config["AWS:BucketName"];
-            string accessKeyId = _config["AWS:AccessKeyId"];
-            string secretAccessKey = _config["AWS:SecretAccessKey"];
+            string accessKeyId = _awsAccessKey;
+            string secretAccessKey = _awsSecretKey;
             string region = _config["AWS:Region"];
 
             if (string.IsNullOrEmpty(bucketName) || string.IsNullOrEmpty(accessKeyId) || string.IsNullOrEmpty(secretAccessKey))

@@ -13,9 +13,12 @@ namespace StoreAPI.Controllers
     {
         private readonly IAmazonS3 _s3Client;
         private readonly IConfiguration _config;
-
+        private readonly string _awsAccessKey;
+        private readonly string _awsSecretKey;
         public S3BucketController(IAmazonS3 client,IConfiguration config)
         {
+            _awsAccessKey = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID");
+            _awsSecretKey = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
             _s3Client = client;
             _config = config;
         }
@@ -23,7 +26,7 @@ namespace StoreAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllBuckets()
         {
-            var awsCredentials = new BasicAWSCredentials(_config["AWS:AccessKeyId"], _config["AWS:SecretAccessKey"]);
+            var awsCredentials = new BasicAWSCredentials(_awsAccessKey,_awsSecretKey);
             var s3Client = new AmazonS3Client(awsCredentials, RegionEndpoint.APSouth1);
             var buckets =await s3Client.ListBucketsAsync();
             var bucketnames=buckets.Buckets.Select(s=>s.BucketName).ToList();
@@ -33,7 +36,7 @@ namespace StoreAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBucketAsyc(string bucketName)
         {
-            var awsCredentials = new BasicAWSCredentials(_config["AWS:AccessKeyId"], _config["AWS:SecretAccessKey"]);
+            var awsCredentials = new BasicAWSCredentials(_awsAccessKey,_awsSecretKey);
             var s3Client = new AmazonS3Client(awsCredentials, RegionEndpoint.APSouth1);
             var bucketExists = await Amazon.S3.Util.AmazonS3Util.DoesS3BucketExistAsync(s3Client,bucketName);
             if (bucketExists)
@@ -48,7 +51,7 @@ namespace StoreAPI.Controllers
         
         public async Task<IActionResult> DeleteBucket(string bucketname)
         {
-            var awsCredentials = new BasicAWSCredentials(_config["AWS:AccessKeyId"], _config["AWS:SecretAccessKey"]);
+            var awsCredentials = new BasicAWSCredentials(_awsAccessKey, _awsSecretKey);
             var s3Client = new AmazonS3Client(awsCredentials, RegionEndpoint.APSouth1);
             await s3Client.DeleteBucketAsync(bucketname);
             return Ok($"Bucket {bucketname} had been deleted successfully");
@@ -58,7 +61,7 @@ namespace StoreAPI.Controllers
         public async Task<IActionResult> UploadFiles(IFormFile files,string? prefix)
         {
 
-            var awsCredentials = new BasicAWSCredentials(_config["AWS:AccessKeyId"], _config["AWS:SecretAccessKey"]);
+            var awsCredentials = new BasicAWSCredentials(_awsAccessKey, _awsSecretKey);
             var s3Client = new AmazonS3Client(awsCredentials, RegionEndpoint.APSouth1);
             var request = new PutObjectRequest
             {
@@ -76,7 +79,7 @@ namespace StoreAPI.Controllers
         {
             try
             {
-                var awsCredentials = new BasicAWSCredentials(_config["AWS:AccessKeyId"], _config["AWS:SecretAccessKey"]);
+                var awsCredentials = new BasicAWSCredentials(_awsAccessKey, _awsSecretKey);
                 var s3Client = new AmazonS3Client(awsCredentials, RegionEndpoint.APSouth1);
                 var bucketexits=await Amazon.S3.Util.AmazonS3Util.DoesS3BucketExistV2Async(s3Client, bucketname);
                 if (!bucketexits)
