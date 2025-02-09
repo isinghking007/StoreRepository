@@ -15,18 +15,22 @@ namespace StoreAPI.Controllers
         private readonly IConfiguration _config;
         private readonly string _awsAccessKey;
         private readonly string _awsSecretKey;
-        public S3BucketController(IAmazonS3 client,IConfiguration config)
+        private readonly ILogger   _logger;
+        public S3BucketController(IAmazonS3 client,IConfiguration config,ILogger<S3BucketController> log)
         {
             _awsAccessKey = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID");
             _awsSecretKey = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
             _s3Client = client;
             _config = config;
+            _logger = log;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllBuckets()
         {
+            _logger.LogInformation($"S3Bucket Controller, GetAllBucket Method started");
             var awsCredentials = new BasicAWSCredentials(_awsAccessKey,_awsSecretKey);
+            _logger.LogInformation($"AWS Credentials for testing: AWS Access Key = {_awsAccessKey}\nAWS Secret Key{_awsSecretKey}");
             var s3Client = new AmazonS3Client(awsCredentials, RegionEndpoint.APSouth1);
             var buckets =await s3Client.ListBucketsAsync();
             var bucketnames=buckets.Buckets.Select(s=>s.BucketName).ToList();
@@ -36,7 +40,9 @@ namespace StoreAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBucketAsyc(string bucketName)
         {
-            var awsCredentials = new BasicAWSCredentials(_awsAccessKey,_awsSecretKey);
+            _logger.LogInformation($"S3Bucket Controller, CreateBucketyAsync Method started");
+            var awsCredentials = new BasicAWSCredentials(_awsAccessKey, _awsSecretKey);
+            _logger.LogInformation($"AWS Credentials for testing: AWS Access Key = {_awsAccessKey}\nAWS Secret Key{_awsSecretKey}");
             var s3Client = new AmazonS3Client(awsCredentials, RegionEndpoint.APSouth1);
             var bucketExists = await Amazon.S3.Util.AmazonS3Util.DoesS3BucketExistAsync(s3Client,bucketName);
             if (bucketExists)
@@ -61,7 +67,9 @@ namespace StoreAPI.Controllers
         public async Task<IActionResult> UploadFiles(IFormFile files,string? prefix)
         {
 
+            _logger.LogInformation($"S3Bucket Controller, UploadFiles Method started");
             var awsCredentials = new BasicAWSCredentials(_awsAccessKey, _awsSecretKey);
+            _logger.LogInformation($"AWS Credentials for testing: AWS Access Key = {_awsAccessKey}\nAWS Secret Key{_awsSecretKey}");
             var s3Client = new AmazonS3Client(awsCredentials, RegionEndpoint.APSouth1);
             var request = new PutObjectRequest
             {
@@ -79,7 +87,9 @@ namespace StoreAPI.Controllers
         {
             try
             {
+                _logger.LogInformation($"S3Bucket Controller, GetAllFilesAsync Method started");
                 var awsCredentials = new BasicAWSCredentials(_awsAccessKey, _awsSecretKey);
+                _logger.LogInformation($"AWS Credentials for testing: AWS Access Key = {_awsAccessKey}\nAWS Secret Key{_awsSecretKey}");
                 var s3Client = new AmazonS3Client(awsCredentials, RegionEndpoint.APSouth1);
                 var bucketexits=await Amazon.S3.Util.AmazonS3Util.DoesS3BucketExistV2Async(s3Client, bucketname);
                 if (!bucketexits)
