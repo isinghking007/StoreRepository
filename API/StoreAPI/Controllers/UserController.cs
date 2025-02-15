@@ -16,12 +16,17 @@ namespace StoreAPI.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
+        #region Vairable Declarations
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
         private readonly IServiceS3 _aws;
         private readonly IAmazonS3 _awsclient;
         private readonly ILogger _log;
         private readonly DatabaseDetails _context;
+
+        #endregion Vairable Declarations
+
+        #region Constructor
         public UserController(ILogger<UserController> log, IUserRepository userRepository,IServiceS3 aws,IConfiguration config,IAmazonS3 awsclient,DatabaseDetails db) 
         {
             _context = db;
@@ -31,6 +36,10 @@ namespace StoreAPI.Controllers
             _awsclient = awsclient;
             _log = log;
         }
+
+        #endregion Constructor
+
+        #region Get Methods
 
         [HttpGet("allUsers")]
         public async Task<IActionResult> GetAllUsers()
@@ -52,6 +61,20 @@ namespace StoreAPI.Controllers
                 return Ok("Error");
             }
             return Ok(userDetails);
+        }
+        #endregion Get Methods
+
+        #region Post Methods
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(Login login)
+        {
+            var result= await _userRepository.Login(login);
+            if(result!=null)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
         [HttpPost("AddUserDetails")]
@@ -190,7 +213,10 @@ namespace StoreAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-    
+
+        #endregion Post Methods
+
+        #region Put Methods
 
         [HttpPut("updateUser/{userId}")]
 
@@ -204,4 +230,9 @@ namespace StoreAPI.Controllers
             return Ok(userDetails);
         }
     }
+
+        #endregion Put Methods
+
+        #region Delete Methods
+        #endregion Delete Methods
 }

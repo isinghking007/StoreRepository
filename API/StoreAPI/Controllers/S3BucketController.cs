@@ -4,6 +4,7 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.Mvc;
 using StoreAPI.Models;
+using StoreAPI.Service;
 
 namespace StoreAPI.Controllers
 {
@@ -16,13 +17,27 @@ namespace StoreAPI.Controllers
         private readonly string _awsAccessKey;
         private readonly string _awsSecretKey;
         private readonly ILogger   _logger;
-        public S3BucketController(IAmazonS3 client,IConfiguration config,ILogger<S3BucketController> log)
+        private readonly AWSCognitoService _congnito;
+        public S3BucketController(IAmazonS3 client,IConfiguration config,ILogger<S3BucketController> log,AWSCognitoService  congnito)
         {
             _awsAccessKey = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID");
             _awsSecretKey = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
             _s3Client = client;
             _config = config;
             _logger = log;
+            _congnito = congnito;
+        }
+
+        [HttpGet("UserPoolDetails")]
+        public async Task<IActionResult> GetUserPoolDetails()
+        {
+            _logger.LogInformation("Inside Get User Pool Details method");
+            var result = await _congnito.ListUserPoolDetails();
+            if(result == null)
+            {
+                return BadRequest("No Data found");
+            }
+            return Ok(result);
         }
 
         [HttpGet]

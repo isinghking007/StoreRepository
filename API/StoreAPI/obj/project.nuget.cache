@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "U+U+jjWCEYGgxWBq1uOp0oVvTIE3O9bPcUvstkxJee7fUwe7Jio059Bs3Y2IKL85vzQH7GmAhk9hTRtqIIUuMg==",
+  "dgSpecHash": "JTX98ojxf1NwU0r8Y8rQ8uw/suUtHzrkJfRbvMn5arXfBlszN2hfllWNo+HuOtqv6LcJynQBRs2Fu8dixWaz9w==",
   "success": true,
   "projectFilePath": "D:\\StoreRepostiory\\API\\StoreAPI\\StoreAPI.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Avinash Kumar\\.nuget\\packages\\awssdk.core\\3.7.400.64\\awssdk.core.3.7.400.64.nupkg.sha512",
+    "C:\\Users\\Avinash Kumar\\.nuget\\packages\\awssdk.cognitoidentityprovider\\3.7.406.12\\awssdk.cognitoidentityprovider.3.7.406.12.nupkg.sha512",
+    "C:\\Users\\Avinash Kumar\\.nuget\\packages\\awssdk.core\\3.7.402.1\\awssdk.core.3.7.402.1.nupkg.sha512",
     "C:\\Users\\Avinash Kumar\\.nuget\\packages\\awssdk.extensions.netcore.setup\\3.7.301\\awssdk.extensions.netcore.setup.3.7.301.nupkg.sha512",
     "C:\\Users\\Avinash Kumar\\.nuget\\packages\\awssdk.s3\\3.7.410.6\\awssdk.s3.3.7.410.6.nupkg.sha512",
     "C:\\Users\\Avinash Kumar\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",

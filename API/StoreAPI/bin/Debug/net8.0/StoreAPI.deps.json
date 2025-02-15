@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v8.0": {
       "StoreAPI/1.0.0": {
         "dependencies": {
+          "AWSSDK.CognitoIdentityProvider": "3.7.406.12",
           "AWSSDK.Extensions.NETCore.Setup": "3.7.301",
           "AWSSDK.S3": "3.7.410.6",
           "Microsoft.EntityFrameworkCore": "8.0.10",
@@ -23,17 +24,28 @@
           "StoreAPI.dll": {}
         }
       },
-      "AWSSDK.Core/3.7.400.64": {
+      "AWSSDK.CognitoIdentityProvider/3.7.406.12": {
+        "dependencies": {
+          "AWSSDK.Core": "3.7.402.1"
+        },
+        "runtime": {
+          "lib/net8.0/AWSSDK.CognitoIdentityProvider.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.7.406.12"
+          }
+        }
+      },
+      "AWSSDK.Core/3.7.402.1": {
         "runtime": {
           "lib/net8.0/AWSSDK.Core.dll": {
             "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.7.400.64"
+            "fileVersion": "3.7.402.1"
           }
         }
       },
       "AWSSDK.Extensions.NETCore.Setup/3.7.301": {
         "dependencies": {
-          "AWSSDK.Core": "3.7.400.64",
+          "AWSSDK.Core": "3.7.402.1",
           "Microsoft.Extensions.Configuration.Abstractions": "9.0.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.0"
@@ -47,7 +59,7 @@
       },
       "AWSSDK.S3/3.7.410.6": {
         "dependencies": {
-          "AWSSDK.Core": "3.7.400.64"
+          "AWSSDK.Core": "3.7.402.1"
         },
         "runtime": {
           "lib/net8.0/AWSSDK.S3.dll": {
@@ -1194,12 +1206,19 @@
       "serviceable": false,
       "sha512": ""
     },
-    "AWSSDK.Core/3.7.400.64": {
+    "AWSSDK.CognitoIdentityProvider/3.7.406.12": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-z1YP6lDeIgi04Z/YP/+Jw2m02TWo8Fm5wZy21X686RwN2k/3nKlDSwogv1RLrtSnvtuKKYm6uXPmwioWhhKDHA==",
-      "path": "awssdk.core/3.7.400.64",
-      "hashPath": "awssdk.core.3.7.400.64.nupkg.sha512"
+      "sha512": "sha512-Ghi+2dJl06+OK6HN1HOyfTDS6Gwr2kSIOkH+mjx9TQyvXo/KFSFGjZhWLXj2bVaVyac7pNz7iOqXZuFJ0JSpsQ==",
+      "path": "awssdk.cognitoidentityprovider/3.7.406.12",
+      "hashPath": "awssdk.cognitoidentityprovider.3.7.406.12.nupkg.sha512"
+    },
+    "AWSSDK.Core/3.7.402.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-P/ylF4uchHwD0x7M3HHu/K9hWhrq9bAyG8Alo/ZlxE6zqm30LbqIJKjITEB8n9y4I8Jax3aeVtHo2395fI3zvA==",
+      "path": "awssdk.core/3.7.402.1",
+      "hashPath": "awssdk.core.3.7.402.1.nupkg.sha512"
     },
     "AWSSDK.Extensions.NETCore.Setup/3.7.301": {
       "type": "package",
