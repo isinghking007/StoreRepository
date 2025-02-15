@@ -1,4 +1,6 @@
-﻿using Amazon.Runtime.SharedInterfaces;
+﻿using Amazon;
+using Amazon.CognitoIdentityProvider.Model.Internal.MarshallTransformations;
+using Amazon.Runtime.SharedInterfaces;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +10,7 @@ using Serilog.Core;
 using StoreAPI.Database;
 using StoreAPI.Interfaces;
 using StoreAPI.Models;
+using StoreAPI.Service;
 
 
 namespace StoreAPI.Repositories
@@ -17,11 +20,13 @@ namespace StoreAPI.Repositories
         private readonly DatabaseDetails _db;
         private readonly IServiceS3 _awsService;
         private readonly ILogger<UserRepository> _log;
-        public UserRepository(DatabaseDetails db,IServiceS3 awsService,ILogger<UserRepository> log) 
+        private readonly AWSCognitoService _awsCognito;
+        public UserRepository(DatabaseDetails db,IServiceS3 awsService,ILogger<UserRepository> log,AWSCognitoService aWSCognito) 
         {
             _db = db;
             _awsService = awsService;
             _log = log;
+            _awsCognito = aWSCognito;
         }
 
         public async Task<List<UserInfo>> GetAllUsers()
@@ -39,14 +44,45 @@ namespace StoreAPI.Repositories
         }
         public async Task<string> AddUserDetails(UserInfo userinfo)
         {
+            _log.LogInformation("Inside AddUserDetails Method in User Repository");
             UserInfo user = await GetUserDetails(userinfo.MobileNumber);
             if(user!=null)
             {
                 return ("User Already Added");
             }
+            var awscognito = await _awsCognito.RegisterUser(userinfo.Email,userinfo.MobileNumber, userinfo.UserName, userinfo.Password);
+            if(awscognito == null)
+            {
+                _log.LogWarning($"Something wrong while adding user details into AWS Cognito = {awscognito}");
+                return ("AWS Cognito Error");
+            }
+            _log.LogInformation($"AWS Cognioto value = {awscognito}");
            await _db.Users.AddAsync(userinfo);
             await _db.SaveChangesAsync();
             return ("User details saved");
+        }
+
+        public async Task<string> Login(Login login)
+        {
+            var result = string.Empty;
+            if(login.Email !=null || login.Phone != null)
+            {
+                if(login.Email!=null && login.Email !="")
+                {
+                     result = await _awsCognito.LoginUser(login.Email, login.Password);
+
+                }
+                else
+                {
+                     result = await _awsCognito.LoginUser(login.Phone, login.Password);
+                }
+            }
+            if(result!=null)
+            {
+                return result;
+            }
+            
+            return "Phone or Email is requried";
         }
 
         public async Task<string> AddCustomerDetails(CustomerDetailsDTO customer)

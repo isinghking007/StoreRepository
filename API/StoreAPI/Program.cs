@@ -4,6 +4,7 @@ using StoreAPI.Database;
 using StoreAPI.Interfaces;
 using StoreAPI.Repositories;
 using Serilog;
+using StoreAPI.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
 builder.Services.AddAWSService<IAmazonS3>();
 builder.Services.AddScoped<IServiceS3, AmazonS3Repository>();
+builder.Services.AddScoped<AWSCognitoService, AWSCognitoService>();
 
 
 

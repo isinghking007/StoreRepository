@@ -2,10 +2,10 @@
   "version": 3,
   "targets": {
     "net8.0": {
-      "AWSSDK.CognitoIdentityProvider/3.7.406.8": {
+      "AWSSDK.CognitoIdentityProvider/3.7.406.12": {
         "type": "package",
         "dependencies": {
-          "AWSSDK.Core": "[3.7.401.11, 4.0.0)"
+          "AWSSDK.Core": "[3.7.402.1, 4.0.0)"
         },
         "compile": {
           "lib/net8.0/AWSSDK.CognitoIdentityProvider.dll": {
@@ -18,7 +18,7 @@
           }
         }
       },
-      "AWSSDK.Core/3.7.401.11": {
+      "AWSSDK.Core/3.7.402.1": {
         "type": "package",
         "compile": {
           "lib/net8.0/AWSSDK.Core.dll": {
@@ -1902,17 +1902,17 @@
     }
   },
   "libraries": {
-    "AWSSDK.CognitoIdentityProvider/3.7.406.8": {
-      "sha512": "/wejT/MTaPyyO4Q1CerI3BLfoaTrbU/UPGpAOT7KrKCmpYauzTHN9iPl4N9SePI396noRdd5/3Hee8P+aqlgCg==",
+    "AWSSDK.CognitoIdentityProvider/3.7.406.12": {
+      "sha512": "Ghi+2dJl06+OK6HN1HOyfTDS6Gwr2kSIOkH+mjx9TQyvXo/KFSFGjZhWLXj2bVaVyac7pNz7iOqXZuFJ0JSpsQ==",
       "type": "package",
-      "path": "awssdk.cognitoidentityprovider/3.7.406.8",
+      "path": "awssdk.cognitoidentityprovider/3.7.406.12",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "analyzers/dotnet/cs/AWSSDK.CognitoIdentityProvider.CodeAnalysis.dll",
         "analyzers/dotnet/cs/SharedAnalysisCode.dll",
-        "awssdk.cognitoidentityprovider.3.7.406.8.nupkg.sha512",
+        "awssdk.cognitoidentityprovider.3.7.406.12.nupkg.sha512",
         "awssdk.cognitoidentityprovider.nuspec",
         "images/AWSLogo.png",
         "lib/net35/AWSSDK.CognitoIdentityProvider.dll",
@@ -1934,15 +1934,15 @@
         "tools/uninstall.ps1"
       ]
     },
-    "AWSSDK.Core/3.7.401.11": {
-      "sha512": "tZ8dXsHj/6JaheljHB/2+AVXUwfq5Wij0h9odQclABdtM78CfdKs0f8xTQ6fS3UttSVgc5bmKTqNvEaocNOLeg==",
+    "AWSSDK.Core/3.7.402.1": {
+      "sha512": "P/ylF4uchHwD0x7M3HHu/K9hWhrq9bAyG8Alo/ZlxE6zqm30LbqIJKjITEB8n9y4I8Jax3aeVtHo2395fI3zvA==",
       "type": "package",
-      "path": "awssdk.core/3.7.401.11",
+      "path": "awssdk.core/3.7.402.1",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "awssdk.core.3.7.401.11.nupkg.sha512",
+        "awssdk.core.3.7.402.1.nupkg.sha512",
         "awssdk.core.nuspec",
         "images/AWSLogo.png",
         "lib/net35/AWSSDK.Core.dll",
@@ -5256,7 +5256,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "AWSSDK.CognitoIdentityProvider >= 3.7.406.8",
+      "AWSSDK.CognitoIdentityProvider >= 3.7.406.12",
       "AWSSDK.Extensions.NETCore.Setup >= 3.7.301",
       "AWSSDK.S3 >= 3.7.410.6",
       "Microsoft.EntityFrameworkCore >= 8.0.10",
@@ -5310,7 +5310,7 @@
         "dependencies": {
           "AWSSDK.CognitoIdentityProvider": {
             "target": "Package",
-            "version": "[3.7.406.8, )"
+            "version": "[3.7.406.12, )"
           },
           "AWSSDK.Extensions.NETCore.Setup": {
             "target": "Package",

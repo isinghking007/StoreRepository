@@ -12,6 +12,9 @@ namespace StoreAPI.Models
         public string LastName { get; set; }
         [Required]
         public required string MobileNumber { get; set; } // Make this composite key
+        
+        public string Email { get; set; }
+        public string Password { get; set; }
         [Required]
         public required int CompanyId { get; set; }
 
