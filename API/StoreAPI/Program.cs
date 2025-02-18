@@ -5,8 +5,70 @@ using StoreAPI.Interfaces;
 using StoreAPI.Repositories;
 using Serilog;
 using StoreAPI.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Amazon.Runtime;
+using Amazon.CognitoIdentityProvider;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+#region JIRA STOREREPO - 10 JWT START
+var userPoolId  = Environment.GetEnvironmentVariable("UserPoolId");
+var awsRegion = builder.Configuration["AWS:Region"];
+var authority = $"https://cognito-idp.{awsRegion}.amazonaws.com/{userPoolId}";
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.Authority = authority;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = authority,
+        ValidateAudience = true,
+        ValidAudience=Environment.GetEnvironmentVariable("ClientID_new_userpool"),
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
+    };
+    Log.Information($"User Pool ID = {userPoolId}\nAWS Region = {awsRegion}\nAuthority URL = {authority}");
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Log.Warning($"Authentication Failed:{context.Exception.Message}");
+            //Console.WriteLine($"Authentication Failed:{context.Exception.Message}");
+            return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            Log.Information("Authentication validated Successfully");
+           // Console.WriteLine($"Authentication Validated Sucessfully");
+            return Task.CompletedTask;
+        },
+        OnMessageReceived = context =>
+        {
+            if (string.IsNullOrEmpty(context.Token))
+            {
+                Log.Warning("No JWT token received in the request.");
+            }
+            else
+            {
+                Log.Information("JWT Token received.");
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
+
+// Enforce authorization globally
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
+
+#endregion JIRA STOREREPO - 10 JWT END
 
 // Add services to the container.
 // Configure Serilog
@@ -47,6 +109,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors(m => m.AllowAnyHeader().AllowAnyOrigin().AllowAnyOrigin());
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
