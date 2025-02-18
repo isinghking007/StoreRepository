@@ -9,6 +9,7 @@ using StoreAPI.Models;
 using System.Net;
 using StoreAPI.Database;
 using Amazon.Runtime.SharedInterfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StoreAPI.Controllers
 {
@@ -40,7 +41,7 @@ namespace StoreAPI.Controllers
         #endregion Constructor
 
         #region Get Methods
-
+        [AllowAnonymous]
         [HttpGet("allUsers")]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -65,7 +66,7 @@ namespace StoreAPI.Controllers
         #endregion Get Methods
 
         #region Post Methods
-
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(Login login)
         {
