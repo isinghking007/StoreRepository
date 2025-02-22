@@ -78,6 +78,32 @@ namespace StoreAPI.Controllers
             return BadRequest(result);
         }
 
+        #region RESET USER JIRA STOREREPO-14 END
+
+        [AllowAnonymous]
+        [HttpPost("reset-user")]
+        public async Task<IActionResult> ResetPassword(ResetUser reset)
+        {
+            var result = await _userRepository.ResetUser(reset);
+            if(result==null)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [AllowAnonymous]
+        [HttpPost("confirm-password")]
+        public async Task<IActionResult> ConfirmPassword(ResetUser reset)
+        {
+            var result = await _userRepository.ConfirmForgetPassword(reset);
+            if (result == null)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        #endregion RESET USER JIRA STOREREPO-14 END
         [HttpPost("AddUserDetails")]
         public async Task<IActionResult> AddUserDetails(UserInfo userinfo)
         {
