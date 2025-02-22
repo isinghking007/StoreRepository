@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Amazon.Runtime;
 using Amazon.CognitoIdentityProvider;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization; 
 
 var builder = WebApplication.CreateBuilder(args);
 

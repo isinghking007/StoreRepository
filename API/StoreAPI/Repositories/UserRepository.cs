@@ -42,6 +42,32 @@ namespace StoreAPI.Repositories
             }
             return user;
         }
+        #region RESET USER JIRA STOREREPO-14 END
+        public async Task<string> ResetUser(ResetUser reset)
+        {
+            _log.LogInformation("Inside Reset User Method in User Repository");
+            var result = await _awsCognito.ResetUser(reset.UserName);
+            if(result == null)
+            {
+                _log.LogWarning($"Error while resetting password: {result}");
+                return $"Error while resetting password: {result}";
+            }
+            return result;
+        }
+
+        public async Task<string> ConfirmForgetPassword(ResetUser reset)
+        {
+            _log.LogInformation("Inside Confirm Forget Password method in User Repository");
+            var result = await _awsCognito.ConfirmForgotPassword(reset.UserName, reset.VerificationCode, reset.NewPassword);
+            if (result == null)
+            {
+                _log.LogWarning($"Error while resetting password: {result}");
+                return $"Error while resetting password: {result}";
+            }
+            return result;
+        }
+
+        #endregion RESET USER JIRA STOREREPO-14 END
         public async Task<string> AddUserDetails(UserInfo userinfo)
         {
             _log.LogInformation("Inside AddUserDetails Method in User Repository");

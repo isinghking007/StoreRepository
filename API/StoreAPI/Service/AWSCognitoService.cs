@@ -54,7 +54,7 @@ namespace StoreAPI.Service
                     }
                 }
                 return $"Details logged in Log file";
-            }
+            } 
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
@@ -142,6 +142,63 @@ namespace StoreAPI.Service
 
 
         }
+
+        #region RESET USER JIRA STOREREPO-14 START
+        public async Task<string> ResetUser(string username)
+        {
+            _log.LogInformation($"Inside Reset User Method in AWSCognitoService for {username}");
+            username =FormatPhoneNumber(username);
+            var request = new ForgotPasswordRequest
+            {
+                ClientId = _clientId_user_pool,
+                Username = username
+            };
+            try
+            {
+                var response = await _provider.ForgotPasswordAsync(request);
+                _log.LogInformation($"PassCode sent to user's email: {response.CodeDeliveryDetails.Destination}");
+                return response.CodeDeliveryDetails.Destination;
+            }
+            catch (Exception ex)
+            {
+                _log.LogWarning($"Error in Reset User Method in AWSCognitoService for {username} : {ex.Message}");
+                return ex.Message;
+            }
+        }
+        public async Task<string> ConfirmForgotPassword(string username,string passcode,string newPassword)
+        {
+            _log.LogInformation($"Inside Confirm Forgot Password Method in AWSCognitoService for {username}");
+           
+            try
+            {
+                username = FormatPhoneNumber(username);
+                var request = new ConfirmForgotPasswordRequest
+                {
+                    ClientId = _clientId_user_pool,
+                    Username = username,
+                    ConfirmationCode = passcode,
+                    Password = newPassword
+                };
+                try
+                {
+                    var response = await _provider.ConfirmForgotPasswordAsync(request);
+                    _log.LogInformation($"Password had been sucessfully reset for user: {username}");
+                    return response.HttpStatusCode.ToString();
+                }
+                catch (Exception ex)
+                {
+                    _log.LogWarning($"Error in Confirm Forgot Password Method in AWSCognitoService for {username} : {ex.Message}");
+                    return ex.Message;
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.LogWarning($"Error in Confirm Forgot Password Method in AWSCognitoService for {username} : {ex.Message}");
+                return ex.Message;
+            }
+        }
+
+        #endregion RESET USER JIRA STOREREPO-14 END
 
         #region Helper Methods
 
