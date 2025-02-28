@@ -1,0 +1,53 @@
+<div class="min-h-screen flex items-center justify-center bg-[rgb(41,36,36)] p-4">
+    <div class="w-full max-w-md bg-gray-900 text-white p-6 rounded-lg border-white shadow-xl shadow-white">
+        <h2 class="text-[2rem] font-bold text-center mb-4">Create an Account</h2>
+
+        <p class="text-center text-gray-400 text-sm mt-4">Already have an account?
+            <a href="#" class="text-blue-400 hover:underline">Log in</a>
+        </p>
+
+        <form [formGroup]="signup" (ngSubmit)="onSubmit()">
+            <div class="mb-4">
+                <label class="block text-gray-300 mb-1" for="firstname">First Name</label>
+                <input type="text" id="firstname"  formControlName="firstname"
+                    class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter your first name">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-300 mb-1" for="lastname">Last Name</label>
+                <input type="text" id="lastname" formControlName="lastname"
+                    class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter your last name">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-300 mb-1" for="username">User Name</label>
+                <input type="text" id="username"  formControlName="username"
+                    class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter your user name">
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-300 mb-1" for="mobileNumber">Mobile Number</label>
+                <input type="text" id="mobileNumber" formControlName="mobileNumber" class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your mobile number">
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-300 mb-1" for="email">Email</label>
+                <input type="email" id="email" formControlName="email"
+                    class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter your email">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-300 mb-1" for="password">Password</label>
+                <input type="password" id="password" formControlName="password"
+                    class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter your password">
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-2 rounded transition">
+                Sign Up
+            </button>
+        </form>
+    </div>
+</div>

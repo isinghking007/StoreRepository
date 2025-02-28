@@ -159,9 +159,13 @@ D:\StoreRepostiory\API\StoreAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMu
 D:\StoreRepostiory\API\StoreAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.StoreAPI.props
 D:\StoreRepostiory\API\StoreAPI\obj\Debug\net8.0\staticwebassets.pack.json
 D:\StoreRepostiory\API\StoreAPI\obj\Debug\net8.0\scopedcss\bundle\StoreAPI.styles.css
-D:\StoreRepostiory\API\StoreAPI\obj\Debug\net8.0\StoreAPI.csproj.CopyComplete
 D:\StoreRepostiory\API\StoreAPI\obj\Debug\net8.0\StoreAPI.dll
 D:\StoreRepostiory\API\StoreAPI\obj\Debug\net8.0\refint\StoreAPI.dll
 D:\StoreRepostiory\API\StoreAPI\obj\Debug\net8.0\StoreAPI.pdb
 D:\StoreRepostiory\API\StoreAPI\obj\Debug\net8.0\StoreAPI.genruntimeconfig.cache
 D:\StoreRepostiory\API\StoreAPI\obj\Debug\net8.0\ref\StoreAPI.dll
+D:\StoreRepostiory\API\StoreAPI\bin\Debug\net8.0\StoreAPI.staticwebassets.endpoints.json
+D:\StoreRepostiory\API\StoreAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\StoreRepostiory\API\StoreAPI\obj\Debug\net8.0\staticwebassets\msbuild.StoreAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\StoreRepostiory\API\StoreAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\StoreRepostiory\API\StoreAPI\obj\Debug\net8.0\StoreAPI.csproj.Up2Date

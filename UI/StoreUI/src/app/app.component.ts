@@ -4,6 +4,7 @@ import { HeadersComponent } from './Components/Headers/headers/headers.component
 import { HomeComponent } from './Components/Home/home/home.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddproductComponent } from './Components/Product/AddProducts/addproduct/addproduct.component';
+import { SignupComponent } from './Components/User/SignUp/signup/signup.component';
 
 @Component({
   selector: 'app-root',

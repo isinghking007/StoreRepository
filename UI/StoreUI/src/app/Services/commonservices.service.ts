@@ -2,6 +2,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CustomerDetailsDTO } from '../Interfaces/CustomerDetailsDTO';
+import { UserDetails } from '../Interfaces/UserDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,10 @@ export class CommonservicesService {
     return this.http.post(this.url + 'User/AddCustomerDetails', data, {
       responseType: 'text' as 'json', // Adjust response type as needed
     });
+  }
+
+  addUserDetails(data:UserDetails):Observable<UserDetails>{
+    return this.http.post<UserDetails>(this.url+"User/AddUserDetails",data,{responseType:'text' as 'json'});
   }
   
   //#endregion Post Methods
