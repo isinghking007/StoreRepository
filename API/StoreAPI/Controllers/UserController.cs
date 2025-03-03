@@ -104,6 +104,7 @@ namespace StoreAPI.Controllers
         }
 
         #endregion RESET USER JIRA STOREREPO-14 END
+        [AllowAnonymous]
         [HttpPost("AddUserDetails")]
         public async Task<IActionResult> AddUserDetails(UserInfo userinfo)
         {
