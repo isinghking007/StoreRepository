@@ -9,6 +9,7 @@ using StoreAPI.Models;
 using System.Net;
 using StoreAPI.Database;
 using Amazon.Runtime.SharedInterfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StoreAPI.Controllers
 {
@@ -40,7 +41,7 @@ namespace StoreAPI.Controllers
         #endregion Constructor
 
         #region Get Methods
-
+        [AllowAnonymous]
         [HttpGet("allUsers")]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -65,7 +66,7 @@ namespace StoreAPI.Controllers
         #endregion Get Methods
 
         #region Post Methods
-
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(Login login)
         {
@@ -77,6 +78,32 @@ namespace StoreAPI.Controllers
             return BadRequest(result);
         }
 
+        #region RESET USER JIRA STOREREPO-14 END
+
+        [AllowAnonymous]
+        [HttpPost("reset-user")]
+        public async Task<IActionResult> ResetPassword(ResetUser reset)
+        {
+            var result = await _userRepository.ResetUser(reset);
+            if(result==null)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [AllowAnonymous]
+        [HttpPost("confirm-password")]
+        public async Task<IActionResult> ConfirmPassword(ResetUser reset)
+        {
+            var result = await _userRepository.ConfirmForgetPassword(reset);
+            if (result == null)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        #endregion RESET USER JIRA STOREREPO-14 END
         [HttpPost("AddUserDetails")]
         public async Task<IActionResult> AddUserDetails(UserInfo userinfo)
         {

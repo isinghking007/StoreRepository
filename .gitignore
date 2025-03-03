@@ -9,3 +9,6 @@ appsettings.dev.json
 *.env
 *.json
 *.yaml
+/API/StoreAPI/.vs/StoreAPI/CopilotIndices/17.13.430.18484
+/API/StoreAPI/obj/Debug/net8.0
+/API/StoreAPI/.vs
