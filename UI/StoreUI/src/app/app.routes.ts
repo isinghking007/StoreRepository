@@ -3,6 +3,7 @@ import { AddproductComponent } from './Components/Product/AddProducts/addproduct
 import { AddcustomerComponent } from './Components/Customer/AddCustomer/addcustomer/addcustomer.component';
 import { CompanyComponent } from './Components/Company/company/company.component';
 import { TestComponent } from './Components/Test/test/test.component';
+import { SignupComponent } from './Components/SignUp/signup/signup.component';
 
 export const routes: Routes = [
     {
@@ -16,5 +17,8 @@ export const routes: Routes = [
     },
     {
         path:'test',component:TestComponent
+    },
+    {
+        path:'signup',component:SignupComponent
     }
 ];
