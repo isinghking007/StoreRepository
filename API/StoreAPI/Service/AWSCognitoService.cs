@@ -82,11 +82,11 @@ namespace StoreAPI.Service
                 var result = await _provider.SignUpAsync(signupreq);
                 if(result.HttpStatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    await _provider.AdminConfirmSignUpAsync(new AdminConfirmSignUpRequest
-                    {
-                        Username = username,
-                        UserPoolId = _userPoolId
-                    });
+                    /* await _provider.AdminConfirmSignUpAsync(new AdminConfirmSignUpRequest
+                     {
+                         Username = username,
+                         UserPoolId = _userPoolId
+                     });*/
                     return result.UserSub;
                 }
                 else
