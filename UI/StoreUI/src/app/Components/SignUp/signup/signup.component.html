@@ -3,7 +3,7 @@
         <h2 class="text-[2rem] font-bold text-center mb-4">Create an Account</h2>
 
         <p class="text-center text-gray-400 text-sm mt-4">Already have an account?
-            <a href="#" class="text-blue-400 hover:underline">Log in</a>
+            <a routerLink="/login" routerLinkActive="active" class="text-blue-400 hover:underline">Log in</a>
         </p>
 
         <form [formGroup]="signup" (ngSubmit)="onSubmit()">
