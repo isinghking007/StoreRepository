@@ -1,0 +1,26 @@
+<div class="min-h-screen flex items-center justify-center bg-[rgb(41,36,36)] p-4">
+    <div class="w-full max-w-md bg-gray-900 text-white p-6 rounded-lg border-white shadow-xl shadow-white">
+        <h2 class="text-[2rem] font-bold text-center mb-4">Login</h2>
+
+        <p class="text-center text-gray-400 text-sm mt-4">Don't have an account?
+            <a routerLink="/signup" routerLinkActive="active" class="text-blue-400 hover:underline">Sign Up</a>
+        </p>
+
+        <form [formGroup]="login" (ngSubmit)="onSubmit()">
+          <div class="mb-4">
+                <label class="block text-gray-300 mb-1" for="phone">Mobile Number</label>
+                <input type="text" id="phone" formControlName="phone" class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your mobile number">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-300 mb-1" for="password">Password</label>
+                <input type="password" id="password" formControlName="password"
+                    class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter your password">
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-2 rounded transition">
+                Login
+            </button>
+        </form>
+    </div>
+</div>
