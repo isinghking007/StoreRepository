@@ -53,6 +53,7 @@ namespace StoreAPI.Controllers
             return Ok(users);
         }
 
+        [AllowAnonymous]
         [HttpGet("userDetails/{phone}")]
         public async Task<IActionResult> GetUserDetails(string phone)
         {

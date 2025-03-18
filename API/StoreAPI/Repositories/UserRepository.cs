@@ -35,7 +35,8 @@ namespace StoreAPI.Repositories
         }
         public async Task<UserInfo> GetUserDetails(string phone)
         {
-           UserInfo user= await _db.Users.FirstOrDefaultAsync(u=>u.MobileNumber == phone);  
+            string phonenumber = FormatPhoneNumber(phone);
+           UserInfo user= await _db.Users.FirstOrDefaultAsync(u=>u.MobileNumber == phonenumber);  
             if (user == null)
             {
                 return null;
@@ -196,5 +197,27 @@ namespace StoreAPI.Repositories
                 return userInfo; 
 
         }
-    }
+    
+
+    #region Helper Methods JIRA 17
+
+    private string FormatPhoneNumber(string phoneNumber)
+        {
+            if(phoneNumber.Length==13 && phoneNumber.StartsWith("+"))
+            {
+                phoneNumber = phoneNumber.Substring(3, 10);
+                return phoneNumber;
+            }
+            else if(phoneNumber.Length ==10 && !phoneNumber.StartsWith("+"))
+            {
+                return phoneNumber;
+            }
+            else
+            {
+                return "Invalid Phone Number";
+            }
+        }
+
+    #endregion Helper Methods JIRA 17
+}
 }
