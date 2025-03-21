@@ -47,13 +47,19 @@ namespace StoreAPI.Repositories
         public async Task<string> ResetUser(ResetUser reset)
         {
             _log.LogInformation("Inside Reset User Method in User Repository");
-            var result = await _awsCognito.ResetUser(reset.UserName);
-            if(result == null)
+            var databasecheck = await _db.Users.FirstOrDefaultAsync(d => d.MobileNumber == reset.UserName);
+            if (databasecheck != null)
             {
-                _log.LogWarning($"Error while resetting password: {result}");
-                return $"Error while resetting password: {result}";
+                var result = await _awsCognito.ResetUser(reset.UserName);
+
+                if (result == null)
+                {
+                    _log.LogWarning($"Error while resetting password: {result}");
+                    return $"Error while resetting password: {result}";
+                }
+                return result;
             }
-            return result;
+            return $"User is not registered, Please SignUp";
         }
 
         public async Task<string> ConfirmForgetPassword(ResetUser reset)

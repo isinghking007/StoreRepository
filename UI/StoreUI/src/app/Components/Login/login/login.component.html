@@ -5,6 +5,9 @@
         <p class="text-center text-gray-400 text-sm mt-4">Don't have an account?
             <a routerLink="/signup" routerLinkActive="active" class="text-blue-400 hover:underline">Sign Up</a>
         </p>
+        <p class="text-center text-gray-400 text-sm mt-4">Don't remember the Password?
+            <a routerLink="/resetpassword" routerLinkActive="active" class="text-blue-400 hover:underline">Reset Password</a>
+        </p>
 
         <form [formGroup]="login" (ngSubmit)="onSubmit()">
           <div class="mb-4">

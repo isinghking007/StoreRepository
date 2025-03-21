@@ -5,6 +5,7 @@ import { CustomerDetailsDTO } from '../Interfaces/CustomerDetailsDTO';
 import { UserDetails } from '../Interfaces/UserDetails.interface';
 import { Login } from '../Interfaces/login.interface';
 import { jwtDecode } from 'jwt-decode';
+import { ResetPassword } from '../Interfaces/ResetPassword.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -94,5 +95,14 @@ getUserDetails(phone:string){
   login(data:Login):Observable<Login>{
     return this.http.post<Login>(this.url+"User/Login",data,{responseType:'text' as 'json'});
   }
+
+
+  resetUser(data:ResetPassword):Observable<ResetPassword>{
+    return this.http.post<ResetPassword>(this.url+"User/reset-user",data,{responseType:'text' as 'json'});
+  }
+
+  confirmPassword(data:ResetPassword):Observable<ResetPassword>{
+    return this.http.post<ResetPassword>(this.url+"User/confirm-password",data,{responseType:'text' as 'json'});
+  } 
   //#endregion Post Methods
 }
