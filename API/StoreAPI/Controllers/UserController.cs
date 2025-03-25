@@ -159,7 +159,7 @@ namespace StoreAPI.Controllers
                 return Ok("File Added");
 
             }*/
-
+        [AllowAnonymous]
         [HttpPost("AddCustomerDetails")]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> AddCustomerDetails(CustomerDetailsDTO customer)

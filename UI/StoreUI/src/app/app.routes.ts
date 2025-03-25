@@ -11,7 +11,7 @@ import { ResetpasswordComponent } from './Components/ResetPassword/resetpassword
 
 export const routes: Routes = [
     {
-        path:"home",component:HomeComponent
+        path:"home",component:HomeComponent,canActivate:[AuthGuard]
     },
     {
         path:'addproduct',component:AddproductComponent
