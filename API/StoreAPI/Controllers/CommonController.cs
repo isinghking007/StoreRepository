@@ -1,5 +1,6 @@
 using Amazon.CognitoIdentityProvider.Model.Internal.MarshallTransformations;
 using Amazon.Runtime.SharedInterfaces;
+using Amazon.S3.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -21,6 +22,46 @@ namespace StoreAPI.Controllers
         }
 
         #region Get Methods
+
+        [AllowAnonymous]
+        [HttpGet("paidAmountDetails/{customerID}")]
+        public async Task<IActionResult> GetPaidAmountDetails(int customerID)
+        {
+            try
+            {
+                if (customerID > 0)
+                {
+                    var result =await _commonRepo.GetPaidAmountDetails(customerID);
+                    return Ok(result);
+                }
+                return BadRequest("Invalid data.");
+            }
+            catch(Exception ex)
+            {
+                _log.LogError($"Error in the GetPaidAmountDetails Method {ex.Message}");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("dueAmountDetails/{customerID}")]
+        public async Task<IActionResult> GetDueAmountDetails(int customerID)
+        {
+            try
+            {
+                if (customerID > 0)
+                {
+                    var result = await _commonRepo.GetDueAmountDetails(customerID);
+                    return Ok(result);
+                }
+                return BadRequest("Invalid data.");
+            }
+            catch (Exception ex)
+            {
+                _log.LogError($"Error in the GetPaidAmountDetails Method {ex.Message}");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
 
         #endregion Get Methods
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using StoreAPI.Database;
 using StoreAPI.Interfaces;
 using StoreAPI.Models;
@@ -21,6 +22,36 @@ namespace StoreAPI.Repositories
             _db = db;
         }
 
+        #region Get Methods
+        public async Task<List<AmountDue>> GetDueAmountDetails(int customerID)
+        {
+            try
+            {
+                return await _db.AmountDue.Where(c => c.CustomerId == customerID).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _log.LogError($"There seems to be an issue while getting the result from the DB {ex.Message}");
+                return new List<AmountDue>();
+            }
+        }
+        public async Task<List<AmountPaid>> GetPaidAmountDetails(int customerID)
+        {
+            try
+            {
+               return await _db.AmountPaid.Where(c => c.CustomerId == customerID).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _log.LogError($"There seems to be an issue while getting the result from the DB {ex.Message}");
+                return new List<AmountPaid>();
+            }
+        }
+
+        #endregion Get Methods
+
+
+        #region Post Methods
         public async Task<string> PaidAmountMethod(AmountPaidDTO dueAmount)
         {
             try
@@ -108,5 +139,7 @@ namespace StoreAPI.Repositories
                 return "An error occurred while processing your request.";
             }
         }
+
+        #endregion Post Methods
     }
 }
