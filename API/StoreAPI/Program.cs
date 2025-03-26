@@ -86,6 +86,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICommonRepository, CommonRepository>();
 builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
 builder.Services.AddAWSService<IAmazonS3>();
 builder.Services.AddScoped<IServiceS3, AmazonS3Repository>();
@@ -95,7 +96,8 @@ builder.Services.AddScoped<AWSCognitoService, AWSCognitoService>();
 
 builder.Services.AddDbContext<DatabaseDetails>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+          sqlOptions => sqlOptions.CommandTimeout(120));
 });
 var app = builder.Build();
 

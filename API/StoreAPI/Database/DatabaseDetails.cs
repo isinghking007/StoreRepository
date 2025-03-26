@@ -15,6 +15,8 @@ namespace StoreAPI.Database
         public DbSet<DueDetails> DueDetails { get; set; }
         public DbSet<BorrowerDetails> BorrowerDetails { get; set; }
         public DbSet<FormData> FormData { get; set; }
+        public DbSet<AmountPaid> AmountPaid { get; set; }
+        public DbSet<AmountDue> AmountDue { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserInfo>()
