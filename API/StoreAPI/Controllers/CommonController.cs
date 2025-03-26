@@ -25,7 +25,29 @@ namespace StoreAPI.Controllers
         #endregion Get Methods
 
         #region Post Methods
-        
+
+        [AllowAnonymous]
+        [HttpPost("addPaidAmount")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> AddPaidAmount(AmountPaidDTO cust)
+        {
+            try
+            {
+                if (cust != null)
+                {
+                    var result = await _commonRepo.PaidAmountMethod(cust);
+                    return Ok(result);
+                }
+                return BadRequest("Invalid data.");
+            }
+            catch (Exception ex)
+            {
+                _log.LogError($"An error occurred in AddDueAmount: {ex.Message}");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
+
         [AllowAnonymous]
         [HttpPost("addDueAmount")]
         [Consumes("multipart/form-data")]
