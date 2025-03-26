@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Amazon.S3.Model;
 using StoreAPI.Models;
 using Azure.Core;
+using Amazon.Runtime.SharedInterfaces;
 
 namespace StoreAPI.Repositories
 {
@@ -73,17 +74,24 @@ namespace StoreAPI.Repositories
 
         public async Task<S3FileDetailsDTO> UploadFileAsyncNew(IFormFile file)
         {
+            if (file == null)
+            {
+                return null;
+            }
+
+            log.LogInformation("Inside UploadFileAsyncNew Method in AmazonS3Repository");
             string bucketName = _config["AWS:BucketName"];
             string accessKeyId = _awsAccessKey;
             string secretAccessKey = _awsSecretKey;
             string region = _config["AWS:Region"];
 
-            if (string.IsNullOrEmpty(bucketName) || string.IsNullOrEmpty(accessKeyId) || string.IsNullOrEmpty(secretAccessKey))
+            if (string.IsNullOrEmpty(bucketName) || string.IsNullOrEmpty(accessKeyId) || string.IsNullOrEmpty(secretAccessKey)) { 
+                log.LogWarning($"AWS credentials or BucketName are not configured.");
                 throw new Exception("AWS credentials or BucketName are not configured.");
-
+            }
             try
             {
-                log.LogInformation("File upload method started for S3");
+                log.LogInformation($"File upload method started for S3\nFile will be uploaded in {bucketName} in AWS {region} region");
                 // Initialize AWS credentials and S3 client
                 var awsCredentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
                 var s3Client = new AmazonS3Client(awsCredentials, RegionEndpoint.GetBySystemName(region));
