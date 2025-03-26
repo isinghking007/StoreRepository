@@ -12,7 +12,7 @@ namespace StoreAPI.Models
         public string TotalAmount { get; set; }
         public string PaidAmount { get; set; }
         public string RemainingAmount { get; set; }
-        public DateOnly ModifiedDate { get; set; }
+        public DateTime ModifiedDate { get; set; }
         public string FileLocation { get; set; }
         public string FileName { get; set; }
     }
