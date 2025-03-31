@@ -2,6 +2,7 @@
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StoreAPI.Models;
 using StoreAPI.Service;
@@ -77,7 +78,7 @@ namespace StoreAPI.Controllers
             await s3Client.DeleteBucketAsync(bucketname);
             return Ok($"Bucket {bucketname} had been deleted successfully");
         }
-
+        [AllowAnonymous]
         [HttpPost("uploadFiles")]
         public async Task<IActionResult> UploadFiles(IFormFile files,string? prefix)
         {
@@ -96,7 +97,7 @@ namespace StoreAPI.Controllers
             await s3Client.PutObjectAsync(request);
             return Ok($"File {prefix}/{files.FileName} had been uploaded successfully to S3 bucket {request.BucketName} ");
         }
-
+        [AllowAnonymous]
         [HttpGet("preivewallfiles")]
         public async Task<IActionResult> GetAllFilesAsync(string? prefix, string bucketname)
         {
@@ -123,7 +124,7 @@ namespace StoreAPI.Controllers
                     {
                         BucketName = obj.BucketName,
                         Key = obj.Key,
-                        Expires = DateTime.UtcNow.AddMinutes(1)
+                        Expires = DateTime.UtcNow.AddMinutes(30)
                     };
                     return new AmazonS3DTO
                     {

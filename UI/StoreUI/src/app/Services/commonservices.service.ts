@@ -61,6 +61,13 @@ getDecodedUserDetails():{email?:string,phone?:string}{
   //#endregion JIRA 17 - Log out Method
   //#region Get Methods
 
+  getAllUserDueDetails(){
+    return this.http.get(this.url+"common/allUserDueDetails");
+  }
+
+  getSingleUserDueDetails(customerId:number){
+    return this.http.get(this.url+"common/dueAmountDetails/"+customerId);
+  }
   getCompanyDetails(companyId:number){
     return this.http.get(this.url+"company/companyDetails/"+companyId);
   }
@@ -104,5 +111,9 @@ getUserDetails(phone:string){
   confirmPassword(data:ResetPassword):Observable<ResetPassword>{
     return this.http.post<ResetPassword>(this.url+"User/confirm-password",data,{responseType:'text' as 'json'});
   } 
+
+  addDueAmountDetails(data:FormData):Observable<any>{
+    return this.http.post(this.url+"common/addDueAmount",data,{responseType:'text' as 'json'});
+  }
   //#endregion Post Methods
 }
