@@ -7,8 +7,8 @@ namespace StoreAPI.Models
        
         public int CustomerId { get; set; }
         public string TotalBillAmount { get; set; }
+        public string NewAmount { get; set; }
         public string PaidAmount { get; set; }
-        public string DueAmount { get; set; }
         public IFormFile? File { get; set; }
     }
 }

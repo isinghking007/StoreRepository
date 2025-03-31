@@ -22,6 +22,19 @@ namespace StoreAPI.Controllers
         }
 
         #region Get Methods
+        [AllowAnonymous]
+        [HttpGet("allUserDueDetails")]
+        public async Task<IActionResult> GetAllUserDueDetails()
+        {
+            try
+            {
+                var result = await _commonRepo.GetAllUserDueDetails();
+                return Ok(result);
+            }catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         [AllowAnonymous]
         [HttpGet("paidAmountDetails/{customerID}")]
@@ -31,7 +44,7 @@ namespace StoreAPI.Controllers
             {
                 if (customerID > 0)
                 {
-                    var result =await _commonRepo.GetPaidAmountDetails(customerID);
+                    var result =await _commonRepo.GetBorrowerAmountDetails(customerID);
                     return Ok(result);
                 }
                 return BadRequest("Invalid data.");
@@ -43,25 +56,25 @@ namespace StoreAPI.Controllers
             }
         }
 
-        [AllowAnonymous]
-        [HttpGet("dueAmountDetails/{customerID}")]
-        public async Task<IActionResult> GetDueAmountDetails(int customerID)
-        {
-            try
-            {
-                if (customerID > 0)
-                {
-                    var result = await _commonRepo.GetDueAmountDetails(customerID);
-                    return Ok(result);
-                }
-                return BadRequest("Invalid data.");
-            }
-            catch (Exception ex)
-            {
-                _log.LogError($"Error in the GetPaidAmountDetails Method {ex.Message}");
-                return StatusCode(500, "Internal server error.");
-            }
-        }
+        //[AllowAnonymous]
+        //[HttpGet("dueAmountDetails/{customerID}")]
+        //public async Task<IActionResult> GetDueAmountDetails(int customerID)
+        //{
+        //    try
+        //    {
+        //        if (customerID > 0)
+        //        {
+        //            var result = await _commonRepo.GetDueAmountDetails(customerID);
+        //            return Ok(result);
+        //        }
+        //        return BadRequest("Invalid data.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _log.LogError($"Error in the GetPaidAmountDetails Method {ex.Message}");
+        //        return StatusCode(500, "Internal server error.");
+        //    }
+        //}
 
         #endregion Get Methods
 

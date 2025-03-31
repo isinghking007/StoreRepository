@@ -23,28 +23,58 @@ namespace StoreAPI.Repositories
         }
 
         #region Get Methods
-        public async Task<List<AmountDue>> GetDueAmountDetails(int customerID)
+
+        public async Task<List<AllBorrowerDetails>> GetAllUserDueDetails()
         {
             try
             {
-                return await _db.AmountDue.Where(c => c.CustomerId == customerID).ToListAsync();
+                var query = from ad in _db.BahiKhatas
+                            join cd in _db.CustomerDetails
+                            on ad.CustomerId equals cd.CustomerId
+                            select new AllBorrowerDetails
+                            {
+                                CustomerName = cd.CustomerName,
+                                Address = cd.Address,
+                                Mobile=cd.Mobile,
+                                DueId=ad.DueID,
+                                CustomerId = ad.CustomerId,
+                                TotalBillAmount = ad.TotalBillAmount,
+                                NewAmount = ad.NewAmount,
+                                PaidAmount = ad.PaidAmount,
+                                ModifiedDate = ad.ModifiedDate,
+                                FileLocation = ad.FileLocation,
+                                FileName = ad.FileName
+                            };
+
+                return await query.ToListAsync();
             }
-            catch (Exception ex)
+            catch(Exception e)
             {
-                _log.LogError($"There seems to be an issue while getting the result from the DB {ex.Message}");
-                return new List<AmountDue>();
+                return new List<AllBorrowerDetails>();
             }
         }
-        public async Task<List<AmountPaid>> GetPaidAmountDetails(int customerID)
+        //public async Task<List<BahiKhata>> GetDueAmountDetails(int customerID)
+        //{
+        //    try
+        //    {
+        //        return await _db.BahiKhata.Where(c => c.CustomerId == customerID).ToListAsync();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _log.LogError($"There seems to be an issue while getting the result from the DB {ex.Message}");
+        //        return new List<BahiKhata>();
+        //    }
+        //}
+        public async Task<List<BahiKhata>> GetBorrowerAmountDetails(int customerID)
         {
             try
             {
-               return await _db.AmountPaid.Where(c => c.CustomerId == customerID).ToListAsync();
+                return await _db.BahiKhatas.Where(c => c.CustomerId == customerID).ToListAsync();
             }
             catch (Exception ex)
             {
                 _log.LogError($"There seems to be an issue while getting the result from the DB {ex.Message}");
-                return new List<AmountPaid>();
+                return new List<BahiKhata>();
             }
         }
 
@@ -71,20 +101,20 @@ namespace StoreAPI.Repositories
        : $"File has not been uploaded because {fileDetails}");
 
 
-                var amountDetails = new AmountPaid
+                var amountDetails = new BahiKhata
                 {
                     CustomerId = dueAmount.CustomerId,
-                    TotalAmount = dueAmount.TotalAmount,
+                    TotalBillAmount = dueAmount.TotalAmount,
                     PaidAmount = dueAmount.PaidAmount,
-                    RemainingAmount = dueAmount.RemainingAmount,
+                    NewAmount = dueAmount.RemainingAmount,
                     ModifiedDate = DateTime.UtcNow,
                     FileLocation = fileDetails?.FileLocation ?? "No File",
                     FileName = fileDetails?.FileName ?? "No File"
                 };
-                _log.LogInformation($"This amount details is going to be saved in AmountPaid table for PaidID= {amountDetails.PaidID}");
+                _log.LogInformation($"This amount details is going to be saved in AmountPaid table for PaidID= {amountDetails.DueID}");
                 await _db.AddAsync(amountDetails);
                 await _db.SaveChangesAsync();
-                _log.LogInformation($"This amount details has been saved in AmountPaid table for PaidID= {amountDetails.PaidID}");
+                _log.LogInformation($"This amount details has been saved in AmountPaid table for PaidID= {amountDetails.DueID}");
                 return $"Details saved successfully";
             }
 
@@ -116,12 +146,12 @@ namespace StoreAPI.Repositories
        : $"File has not been uploaded because {fileDetails}");
 
 
-                var amountDetails = new AmountDue
+                var amountDetails = new BahiKhata
                 {
                     CustomerId = dueAmount.CustomerId,
                     TotalBillAmount = dueAmount.TotalBillAmount,
+                    NewAmount = dueAmount.NewAmount,
                     PaidAmount = dueAmount.PaidAmount,
-                    DueAmount = dueAmount.DueAmount,
                     ModifiedDate = DateTime.UtcNow,
                     FileLocation = fileDetails?.FileLocation ?? "No File",
                     FileName = fileDetails?.FileName ?? "No File"
