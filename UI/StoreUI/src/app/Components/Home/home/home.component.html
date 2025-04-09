@@ -1,68 +1,61 @@
-<div class="row">
-  <header class="bg-white text-black p-4 shadow-md">
-      <div class="container mx-auto flex justify-between items-center">
-          <!-- Left: Logo -->
-          <a routerLink="/" routerLinkActive="active" class="text-xl font-bold">MyLogo</a>
-
-          <!-- Hamburger Icon (Mobile View) -->
-          <button class="hidden text-black focus:outline-none" (click)="isMenuOpen = !isMenuOpen">
-             @if(!isMenuOpen){ <svg  class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-              </svg>
-            }
-             @else if(isMenuOpen){ <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            }
-          </button>
-
-          <!-- Middle: Centered Navigation Links (Hidden in Mobile) -->
-          <nav class="hidden md:flex justify-center items-center space-x-6 flex-grow">
-              <a routerLink="/home" routerLinkActive="active" class="hover:text-blue-400">Home</a>
-              <a routerLink="/about" routerLinkActive="active" class="hover:text-blue-400">About</a>
-              <a routerLink="/borrower" routerLinkActive="active" class="hover:text-blue-400">Borrower</a>
-              <a routerLink="/contact" routerLinkActive="active" class="hover:text-blue-400">Contact</a>
-          </nav>
-
-          <!-- Responsive Navigation for Mobile View -->
-          <nav 
-              [class.hidden]="!isMenuClicked" [class.block]="isMenuClicked"
-              class="absolute top-16 left-0 w-full md:hidden bg-white p-4 shadow-md space-y-4">
-              <a routerLink="/home" routerLinkActive="active" class="block text-gray-700 hover:text-blue-400">Home</a>
-              <a routerLink="/about" routerLinkActive="active" class="block text-gray-700 hover:text-blue-400">About</a>
-              <a routerLink="/services" routerLinkActive="active" class="block text-gray-700 hover:text-blue-400">Services</a>
-              <a routerLink="/contact" routerLinkActive="active" class="block text-gray-700 hover:text-blue-400">Contact</a>
-              <span class="block text-gray-700 hover:text-blue-400">{{loggedInUserName}}</span>
-              <button (click)="logout()" class="block w-full text-left  text-red-500 hover:bg-gray-100">Logout</button>
-          </nav>
-
-          <div class="relative">
-            <!-- Button -->
-            <p 
-              (click)="isMenuClicked = !isMenuClicked" 
-              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md cursor-pointer">
-              Welcome {{ loggedInUserName }}
-            </p>
-         
-            <!-- Dropdown (Hidden on small screens, toggles only on larger screens) -->
-            @if(isMenuClicked && isLargeScreen){   <div  class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg md:block "
-              
-             >         
-             <div class="md:block">
-              <span class="block px-4 py-2 text-gray-700">{{ loggedInUserName }}</span>
-              <hr class="border-gray-300" />
-              <button 
-                (click)="logout()" 
-                class="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100">
-                Logout
-              </button>
-            </div></div>}
-          </div>
-        </div>          
+<div class="p-6 bg-gray-100 min-h-screen">
+    <div class="max-w-6xl mx-auto bg-white p-6 shadow-lg rounded-xl">
+  
+      <!-- Summary Cards -->
+      <div class="bg-blue-900 text-white py-6 px-4 rounded-lg shadow-lg">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
           
-  </header>
-
-  <div class="col-12">
-      <p>{{output}}</p>
+          <!-- Total Inventories -->
+          <div class="flex flex-col items-center">
+            <div class="bg-yellow-400 p-3 rounded-full">
+              <img src="assets/icons/inventory.png" class="w-8 h-8" alt="Inventory Icon">
+            </div>
+            <p class="text-2xl font-bold mt-2">{{this.totalAmount}}</p>
+            <p class="text-sm">Total Amount</p>
+          </div>
+      
+          <!-- Received -->
+          <div class="flex flex-col items-center">
+            <div class="bg-yellow-400 p-3 rounded-full">
+              <img src="assets/icons/recieved.png" class="w-8 h-8" alt="Received Icon">
+            </div>
+            <p class="text-2xl font-bold mt-2 text-green-400">{{this.totalPaidAmount}}</p>
+            <p class="text-sm">Money Received</p>
+          </div>
+      
+          <!-- On Hand -->
+          <div class="flex flex-col items-center">
+            <div class="bg-yellow-400 p-3 rounded-full">
+              <img src="assets/icons/onhand.png" class="w-8 h-8" alt="On Hand Icon">
+            </div>
+            <p class="text-2xl font-bold mt-2 text-red-500">{{this.totalDueAmount}}</p>
+            <p class="text-sm">Total Due</p>
+          </div>
+      
+          <!-- Shipped -->
+          <div class="flex flex-col items-center">
+            <div class="bg-yellow-400 p-3 rounded-full">
+              <img src="assets/icons/people.png" class="w-8 h-8" alt="Shipped Icon">
+            </div>
+            <p class="text-2xl font-bold mt-2">{{totalCustomer}}</p>
+            <p class="text-sm">Total Customers</p>
+          </div>
+      
+        </div>
+      </div>
+      
+      <!-- Charts -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h3 class="text-xl font-semibold mb-2">Inventory Status</h3>
+          <canvas id="inventoryChart"></canvas>
+        </div>
+  
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h3 class="text-xl font-semibold mb-2">Shipment Status</h3>
+          <canvas id="shipmentChart"></canvas>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+  

@@ -71,13 +71,22 @@ namespace StoreAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(Login login)
         {
-            var result= await _userRepository.Login(login);
-            if(result!=null)
+            try
             {
-                return Ok(result);
+                var (idToken, expirationTime) = await _userRepository.Login(login);
+                return Ok(new { IdToken = idToken, ExpirationTime = expirationTime });
             }
-            return BadRequest(result);
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.LogError($"Error during login: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
         }
+
 
         #region RESET USER JIRA STOREREPO-14 END
 

@@ -1,1 +1,71 @@
-<p>headers works!</p>
+<div class="row">
+    <header class="bg-white text-black p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Left: Logo -->
+            <a routerLink="/home" routerLinkActive="active" class="text-xl font-bold cursor-pointer" (click)="navigateRoutes('home')">JaiMataDi</a>
+  
+            <!-- Hamburger Icon (Mobile View) -->
+            <button class="hidden text-black focus:outline-none" (click)="isMenuOpen = !isMenuOpen">
+               @if(!isMenuOpen){ <svg  class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+              }
+               @else if(isMenuOpen){ <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              }
+            </button>
+  
+            <!-- Middle: Centered Navigation Links (Hidden in Mobile) -->
+            <nav class="hidden md:flex justify-center items-center space-x-6 flex-grow">
+                <a routerLink="/home" routerLinkActive="active" class="hover:text-blue-400 cursor-pointer" (click)="navigateRoutes('home')">Home</a>
+                <a routerLink="/about" routerLinkActive="active" class="hover:text-blue-400 cursor-pointer" (click)="navigateRoutes('company')">Company</a>
+                <a routerLink="/borrower" routerLinkActive="active" class="hover:text-blue-400 cursor-pointer" (click)="navigateRoutes('borrower')">Borrower</a> 
+                <a routerLink="/contact" routerLinkActive="active" class="hover:text-blue-400 cursor-pointer"  (click)="navigateRoutes('addcustomer')">Add Customer</a>
+                <a routerLink="/contact" routerLinkActive="active" class="hover:text-blue-400 cursor-pointer"  (click)="navigateRoutes('addproduct')">Product</a>
+            </nav>
+  
+            <!-- Responsive Navigation for Mobile View -->
+     @if(isAuthenticated){       <nav 
+                [class.hidden]="!isMenuClicked" [class.block]="isMenuClicked"
+                style="z-index: 9999;"  class="absolute top-16 left-0 w-full md:hidden bg-white p-4 shadow-md space-y-4">
+                <a routerLink="/home" routerLinkActive="active" class="block text-gray-700 hover:text-blue-400" (click)="navigateRoutes('home')">Home</a>
+                <a routerLink="/about" routerLinkActive="active" class="block text-gray-700 hover:text-blue-400" (click)="navigateRoutes('company')">Company</a>
+                <a routerLink="/services" routerLinkActive="active" class="block text-gray-700 hover:text-blue-400" (click)="navigateRoutes('borrower')">Borrower</a>
+                <a routerLink="/contact" routerLinkActive="active" class="block text-gray-700 hover:text-blue-400" (click)="navigateRoutes('addcustomer')">Add Customer</a>
+                <a routerLink="/contact" routerLinkActive="active" class="block text-gray-700 hover:text-blue-400" (click)="navigateRoutes('addproduct')">Product</a>
+                <span class="block text-gray-700 hover:text-blue-400">{{loggedInUserName}}</span>
+                <button (click)="logout()" class="block w-full text-left  text-red-500 hover:bg-gray-100">Logout</button>
+            </nav>
+          }
+            <div class="relative">
+              <!-- Button -->
+              <p 
+                (click)="isMenuClicked = !isMenuClicked" 
+                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md cursor-pointer">
+                Welcome {{ loggedInUserName }}
+              </p>
+           
+              <!-- Dropdown (Hidden on small screens, toggles only on larger screens) -->
+              @if(isMenuClicked && isLargeScreen && isAuthenticated)
+              {   
+                <div style="z-index: 9999;"  class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg md:block " >         
+               <div class="md:block" >
+                <span class="block px-4 py-2 text-gray-700">{{ loggedInUserName }}</span>
+                <hr class="border-gray-300" />
+               <button 
+                  (click)="logout()" 
+                  class="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100">
+                  Logout
+                </button>
+              </div></div>}
+            </div>
+          </div>          
+            
+    </header>
+  
+    <div class="col-12">
+        <p>{{output}}</p>
+    </div>
+  </div>
+  

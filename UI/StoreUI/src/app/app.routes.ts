@@ -15,16 +15,16 @@ export const routes: Routes = [
         path:"home",component:HomeComponent,canActivate:[AuthGuard]
     },
     {
-        path:'addproduct',component:AddproductComponent
+        path:'addproduct',component:AddproductComponent ,canActivate:[AuthGuard]
     },
     {
-        path:'addcustomer',component:AddcustomerComponent
+        path:'addcustomer',component:AddcustomerComponent ,canActivate:[AuthGuard]
     },
     {
-        path:'company',component:CompanyComponent
+        path:'company',component:CompanyComponent ,canActivate:[AuthGuard]
     },
     {
-        path:'test',component:TestComponent
+        path:'test',component:TestComponent ,canActivate:[AuthGuard]
     },
     {
         path:'signup',component:SignupComponent
@@ -36,7 +36,7 @@ export const routes: Routes = [
         path:'resetpassword',component:ResetpasswordComponent
     },
     {
-        path:'borrower',component:BorrowerscreenComponent
+        path:'borrower',component:BorrowerscreenComponent ,canActivate:[AuthGuard]
     },
     {
         path:'**',redirectTo:'login'

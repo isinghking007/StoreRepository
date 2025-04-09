@@ -1,7 +1,7 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import {MatGridListModule} from '@angular/material/grid-list';
-import { Router } from '@angular/router';
 import { CommonservicesService } from '../../../Services/commonservices.service';
+import { Chart,registerables } from 'chart.js';
 
 export interface Tile {
   color: string;
@@ -18,66 +18,96 @@ export interface Tile {
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit {
-  tiles: Tile[] = [
-    {text: 'One', cols: 3, rows: 1, color: 'lightblue'},
-    {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
-    {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
-    {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
-  ];
-  output:string="";
-  isAuthenticated:boolean=false;
-  isMenuOpen = false;
-  isMenuClicked=true;
-  screenWidth = window.innerWidth;
-  loggedInUserEmail:string="";
-  loggedInUserName:string="";
-window: any;
-isLargeScreen = window.innerWidth >= 768; // Initial check
-  constructor(private route:Router,private authService:CommonservicesService){
-    this.isAuthenticated = this.authService.isAuthenticated();
-    window.addEventListener('resize', () => {
-      this.screenWidth = window.innerWidth;
-      if (this.screenWidth < 768) {
-        this.isMenuClicked = false; // Ensure menu stays hidden on small screens
+export class HomeComponent implements AfterViewInit,OnInit {
+  latestEntries: any[] = [];
+  totalDueAmount: number = 0;
+  totalPaidAmount: number = 0;
+  totalAmount: number = 0;
+  totalCustomer:number=0;
+  ngAfterViewInit() {
+    this.loadInventoryChart();
+    this.loadShipmentChart();
+  }
+  constructor(private service:CommonservicesService){
+  Chart.register(...registerables);
+  }
+
+  ngOnInit(): void {
+    this.service.getAllUserDueDetails().subscribe((data) => {
+      console.log("Data from home comp", data);
+      console.log(typeof data);
+      if (Array.isArray(data)) {
+        // Create a deep copy of the API response to avoid modifying the original data
+        console.log("inside method");
+        const copiedData = JSON.parse(JSON.stringify(data));
+  
+        const uniqueIds=new Set(copiedData.map((item:any)=>item.customerId));
+        console.log("total Unique IDs:",uniqueIds.size);
+        this.totalCustomer=uniqueIds.size;
+        // Use reduce to aggregate data into an object
+        const aggregatedData = copiedData.reduce((acc: any, current: any) => {
+          const { dueId, customerId, totalBillAmount, newAmount, paidAmount, modifiedDate } = current;
+          // Convert string values to numbers
+        const totalBillAmountNum = parseFloat(totalBillAmount) || 0;
+        const newAmountNum = parseFloat(newAmount) || 0;
+        const paidAmountNum = parseFloat(paidAmount) || 0;
+        if (!acc[customerId] ||new Date(modifiedDate) > new Date(acc[customerId].modifiedDate))
+        {
+          acc[customerId] = {
+            dueId: dueId,
+            customerId,
+            totalBillAmount: totalBillAmountNum,
+            newAmount: newAmountNum,
+            paidAmount: paidAmountNum,
+            modifiedDate,
+          };
+        }
+        return acc;
+      }, {} as Record<number, { customerId: number; dueId: number; totalBillAmount: number; newAmount: number; paidAmount: number; modifiedDate: string }>);
+
+      // Convert the aggregated object into an array
+      this.latestEntries = Object.values(aggregatedData);
+      
+      // Calculate totals using reduce
+       this.totalAmount = this.latestEntries.reduce((sum, item) => sum + (item.totalBillAmount || 0),0);
+       this.totalDueAmount = this.latestEntries.reduce((sum, item) => sum + (item.newAmount || 0),0);
+      this.totalPaidAmount = this.latestEntries.reduce((sum, item) => sum + (item.paidAmount || 0),0);
+
+      console.log("Total Amount:", this.totalAmount);
+      console.log("Total Due:", this.totalDueAmount);
+      console.log("Total Paid Amount:", this.totalPaidAmount);
+    } else {
+      console.warn("Data is not an array");
+    }
+  });
+
+
+}
+
+loadInventoryChart() {
+    new Chart("inventoryChart", {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        datasets: [
+          { label: 'Received', data: [800, 600, 700, 750, 720, 740, 780], backgroundColor: 'yellow' },
+          { label: 'On Hand', data: [500, 450, 470, 480, 490, 495, 500], backgroundColor: 'blue' },
+          { label: 'Shipped', data: [200, 220, 230, 240, 250, 260, 270], backgroundColor: 'green' }
+        ]
       }
     });
-  
   }
- 
 
-  ngOnInit(){
-    this.isMenuClicked=!this.isMenuClicked;
-    console.log(this.authService.getDecodedUserDetails().email);
-    const decodeDetails= this.authService.getDecodedUserDetails();
-    this.authService.getUserDetails(this.authService.getDecodedUserDetails().phone||"").subscribe((data:any)=>{
-      console.log(data);
-      this.loggedInUserName=(data.firstName+" "+data.lastName) || "Guest";
-    }
-);
-    this.loggedInUserEmail=decodeDetails.email||"Guest";
+  loadShipmentChart() {
+    new Chart("shipmentChart", {
+      type: 'doughnut',
+      data: {
+        labels: ['Dispatch', 'In Transit', 'Delayed'],
+        datasets: [{
+          data: [6589, 3330, 500],
+          backgroundColor: ['orange', 'blue', 'red']
+        }]
+      }
+    });
   }
-  @HostListener('window:resize', [])
-  onResize() {
-    this.isLargeScreen = window.innerWidth >= 768;
-  }
-  logout() {
-    this.authService.logout();
-    this.route.navigate(['/login']);
-  }
-  toggleAuth(){ 
-    this.isMenuClicked=!this.isMenuClicked;
-}
-
-
-toggleMenu() {
-  console.log(this.screenWidth);
-  if (this.screenWidth >= 768) {
-    console.log("inside toggle menu");
-    
-    this.isMenuClicked = !this.isMenuClicked;
-    console.log(this.isMenuOpen);
-  }
- 
-}
-}
+ }

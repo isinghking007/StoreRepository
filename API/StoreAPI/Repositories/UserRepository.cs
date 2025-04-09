@@ -95,28 +95,22 @@ namespace StoreAPI.Repositories
             return ("User details saved");
         }
 
-        public async Task<string> Login(Login login)
+        public async Task<(string IdToken, DateTime ExpirationTime)> Login(Login login)
         {
-            var result = string.Empty;
-            if(login.Email !=null || login.Phone != null)
+            if (login.Email != null || login.Phone != null)
             {
-                if(login.Email!=null && login.Email !="")
+                if (login.Email != null && login.Email != "")
                 {
-                     result = await _awsCognito.LoginUser(login.Email, login.Password);
-
+                    return await _awsCognito.LoginUser(login.Email, login.Password);
                 }
                 else
                 {
-                     result = await _awsCognito.LoginUser(login.Phone, login.Password);
+                    return await _awsCognito.LoginUser(login.Phone, login.Password);
                 }
             }
-            if(result!=null)
-            {
-                return result;
-            }
-            
-            return "Phone or Email is requried";
+            throw new ArgumentException("Phone or Email is required");
         }
+
 
         public async Task<string> AddCustomerDetails(CustomerDetailsDTO customer)
         {
