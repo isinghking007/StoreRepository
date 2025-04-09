@@ -3,6 +3,7 @@ import { CommonservicesService } from '../../../Services/commonservices.service'
 import { Console } from 'console';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FileHandle } from '../../../Interfaces/FileHandle/FileHandle';
+import { WindowService } from '../../../Services/WindowService.service';
 
 @Component({
   selector: 'app-borrowerscreen',
@@ -26,7 +27,7 @@ export class BorrowerscreenComponent implements OnInit {
     );
   });
 
-  constructor(private service: CommonservicesService,private fb:FormBuilder) {
+  constructor(private service: CommonservicesService,private fb:FormBuilder,private windowService:WindowService) {
     // this.AmountDueForm=this.fb.group({
     //   customerName:[{value:this.amountDuePopUp[0].customerName,disabled:true}],
     //   address:[''],
@@ -311,7 +312,7 @@ ngOnInit() {
           console.log('Amount due details sent to API successfully:', res);
           this.isModalVisible = false; // Close the modal after successful submission
           this.AmountDueForm.reset(); // Reset the form after submission
-          window.location.reload();
+          this.windowService.nativeWindow?.location.reload();
         });
     } else {
       console.error('Form is invalid:', this.AmountDueForm);

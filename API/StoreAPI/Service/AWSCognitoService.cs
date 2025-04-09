@@ -101,7 +101,7 @@ namespace StoreAPI.Service
 
         }
 
-        public async Task<string> LoginUser(string username, string password)
+        public async Task<(string idToken,DateTime ExpirationDate)> LoginUser(string username, string password)
         {
             // var srpHelper=new CognitoSRPHelper
             username = FormatPhoneNumber(username);
@@ -119,8 +119,13 @@ namespace StoreAPI.Service
             {
                 var request = await _provider.InitiateAuthAsync(authrequest);
                 if(request.AuthenticationResult!=null)
-                {
-                    return request.AuthenticationResult.IdToken;
+                {// Check the expiration time of the access token
+                    var expirationTimeUtc = DateTime.UtcNow.AddSeconds(request.AuthenticationResult.ExpiresIn);
+                    TimeZoneInfo istZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+                    DateTime expirationTimeIst = TimeZoneInfo.ConvertTimeFromUtc(expirationTimeUtc, istZone);
+                    _log.LogInformation($"Access token will expire at {expirationTimeIst}");
+
+                    return (request.AuthenticationResult.IdToken, expirationTimeIst);
                 }
                 else
                 {
@@ -135,10 +140,7 @@ namespace StoreAPI.Service
             {
                 throw new Exception("User does not exist.");
             }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+           
 
 
         }
