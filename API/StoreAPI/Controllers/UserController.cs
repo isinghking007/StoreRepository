@@ -42,6 +42,27 @@ namespace StoreAPI.Controllers
 
         #region Get Methods
         [AllowAnonymous]
+        [HttpGet("test-connectino")]
+        public IActionResult TestConnection()
+        {
+            try
+            {
+                // Try to query the database (or even just check if it can connect)
+                var canConnect = _context.Database.CanConnect();
+                if (canConnect)
+                    return Ok("✅ Connection to PostgreSQL successful!");
+                else
+                    return StatusCode(500, "❌ Unable to connect to PostgreSQL.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"❌ Connection failed: {ex.Message}");
+            }
+        }
+
+
+
+        [AllowAnonymous]
         [HttpGet("allUsers")]
         public async Task<IActionResult> GetAllUsers()
         {

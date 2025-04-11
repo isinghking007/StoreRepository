@@ -73,8 +73,8 @@ ngOnInit() {
           //  console.log(`Adjusting totalBillAmount for customerId: ${customerId}`);
             curr.totalBillAmount = curr.paidAmount;
           }
-          if (curr.totalBillAmount > 0 && curr.dueAmount > 0 && curr.paidAmount!=0) {
-            curr.totalBillAmount = curr.totalBillAmount - curr.dueAmount;
+          if (curr.totalBillAmount > 0 && curr.newAmount > 0 && curr.paidAmount!=0) {
+            curr.totalBillAmount = curr.totalBillAmount - curr.paidAmount;
           }
 
         //  console.log("before Updated Entry:", acc[customerId]);

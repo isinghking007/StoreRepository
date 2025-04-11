@@ -140,21 +140,24 @@ namespace StoreAPI.Repositories
                         await _db.SaveChangesAsync();*/
 
             // Check if customer already exists
+            using var transcationScope = await _db.Database.BeginTransactionAsync();
             try
             {
                 _log.LogInformation("Inside AddCustomerDetails Method");
+
                 var existingCustomer = await _db.CustomerDetails.FirstOrDefaultAsync(c => c.Mobile == customer.Mobile);
                 if (existingCustomer != null)
                 {
                     _log.LogInformation("Customer Already Added");
-                    return ("Customer already added.");
+                    return "Customer already added.";
                 }
 
                 // Upload file to AWS S3
                 _log.LogInformation("Upload file to AWS S3 Method called");
                 var fileLocation = await _awsService.UploadFileAsyncNew(customer.File);
                 _log.LogInformation("File uploaded successfully");
-                // Map DTO to entity
+
+                // Map DTO to CustomerDetails entity
                 var customerDetails = new CustomerDetails
                 {
                     CustomerName = customer.CustomerName,
@@ -163,22 +166,39 @@ namespace StoreAPI.Repositories
                     TotalAmount = customer.TotalAmount,
                     AmountPaid = customer.AmountPaid,
                     RemainingAmount = customer.RemainingAmount,
-                    PurchaseDate = customer.PurchaseDate,
+                    PurchaseDate = customer.PurchaseDate.ToUniversalTime(),
                     FileLocation = fileLocation.FileLocation,
-                    FileName=fileLocation.FileName
-                    // Save file location from S3
+                    FileName = fileLocation.FileName
                 };
 
-                // Save to database
+                // Save CustomerDetails and get generated ID
                 _db.CustomerDetails.Add(customerDetails);
-                await _db.SaveChangesAsync();
+                await _db.SaveChangesAsync(); // This will populate customerDetails.CustomerId
 
-                return ("Customer Details saved successfully");
+                _log.LogInformation($"Adding first entry for {customerDetails.CustomerId} in Bahi Khata table");
+                // Add entry to BahiKhata
+                var amountDetails = new BahiKhata
+                {
+                    CustomerId = customerDetails.CustomerId,
+                    TotalBillAmount = customerDetails.TotalAmount.ToString(),
+                    PaidAmount = customerDetails.AmountPaid.ToString(),
+                    NewAmount = customerDetails.RemainingAmount.ToString(),
+                    ModifiedDate = DateTime.UtcNow,
+                    FileLocation = fileLocation?.FileLocation ?? "No File",
+                    FileName = fileLocation?.FileName ?? "No File"
+                };
+
+                _db.BahiKhatas.Add(amountDetails);
+                await _db.SaveChangesAsync();
+                await transcationScope.CommitAsync();
+                _log.LogInformation("Customer and BahiKhata details saved successfully.");
+                return "Customer Details saved successfully.";
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                _log.LogError(e, "Expcetion occured in this method");
-                return $"some error happened {e}";
+              await  transcationScope.RollbackAsync();
+                _log.LogError(e, "Exception occurred in AddCustomerDetails method");
+                return $"Some error happened: {e.Message}";
             }
         }
 

@@ -93,11 +93,18 @@ builder.Services.AddScoped<IServiceS3, AmazonS3Repository>();
 builder.Services.AddScoped<AWSCognitoService, AWSCognitoService>();
 
 
+//Connection for SQL Server
+//builder.Services.AddDbContext<DatabaseDetails>(options =>
+//{
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+//          sqlOptions => sqlOptions.CommandTimeout(120));
+//});
 
+//Connection for POSTGRE SQL
 builder.Services.AddDbContext<DatabaseDetails>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-          sqlOptions => sqlOptions.CommandTimeout(120));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreConnection"),
+          npgsqlOptions => npgsqlOptions.CommandTimeout(120));
 });
 var app = builder.Build();
 
